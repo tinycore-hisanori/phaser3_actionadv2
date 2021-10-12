@@ -1,21 +1,16 @@
 # phaser3_actionadv1
-# Javascriptサンプルゲーム Vol.9「クライミングキャット」
+# Javascriptサンプルゲーム Vol.10「GEt Flag!」
  
 Phaser3.jsを使ってHTML5のゲームを作るときに参考にしてもらうためのサンプルゲームです。
 
 スマホアプリを作成するときに参考になるアクションゲームです。
 
-ジャンプでエベレスト登頂を目指すゲームです。
-
-間違って落下してしまうと、ゲームオーバDEATH。
-
-制限時間内に登頂の証「旗」をゲットしよう！
 
 # DEMO
  
 以下のアドレスでプレイすることができます。
 
-[クライミングキャット]](https://tinycore-hisanori.github.io/phaser3_actionadv1/)
+[ゲットフラグ！](https://tinycore-hisanori.github.io/phaser3_actionadv2/)
 
  
 # Features
@@ -33,6 +28,7 @@ Phaser3.jsを使ってHTML5のゲームを作るときに参考にしてもら�
  
 * Phase3.js      - 3.55.2
 * Howler.js      - 2.2.3
+* matter.js  
  
 # Note
 

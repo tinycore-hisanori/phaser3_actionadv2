@@ -273,6 +273,7 @@
                         remainTime = remainTime - 1;
                         txtTime.text = "残り時間：" + remainTime;
                         if (remainTime <= 0) {
+                            playGameOver();
                         }
                     }
                     if (cursors.left.isDown) {
