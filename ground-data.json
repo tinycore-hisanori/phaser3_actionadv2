@@ -1,0 +1,125 @@
+{
+	"textures": [
+		{
+			"image": "ground-data.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 399,
+				"h": 475
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "part2.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 300,
+						"h": 200
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 300,
+						"h": 200
+					},
+					"frame": {
+						"x": 1,
+						"y": 1,
+						"w": 300,
+						"h": 200
+					}
+				},
+				{
+					"filename": "part1.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 300,
+						"h": 200
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 1,
+						"w": 300,
+						"h": 199
+					},
+					"frame": {
+						"x": 1,
+						"y": 203,
+						"w": 300,
+						"h": 199
+					}
+				},
+				{
+					"filename": "part3.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 300,
+						"h": 70
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 300,
+						"h": 70
+					},
+					"frame": {
+						"x": 1,
+						"y": 404,
+						"w": 300,
+						"h": 70
+					}
+				},
+				{
+					"filename": "barrel.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 100,
+						"h": 100
+					},
+					"spriteSourceSize": {
+						"x": 2,
+						"y": 0,
+						"w": 95,
+						"h": 100
+					},
+					"frame": {
+						"x": 303,
+						"y": 1,
+						"w": 95,
+						"h": 100
+					}
+				},
+				{
+					"filename": "slime.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 100,
+						"h": 66
+					},
+					"spriteSourceSize": {
+						"x": 5,
+						"y": 4,
+						"w": 89,
+						"h": 61
+					},
+					"frame": {
+						"x": 303,
+						"y": 103,
+						"w": 89,
+						"h": 61
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "3.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:0efebc7cbd4320d833600891dc70b4fc:29bd0e548d63874770b9a64233af2a2f:0a6ffa22008c774013f3a1f4cd7b6d23$"
+	}
+}
