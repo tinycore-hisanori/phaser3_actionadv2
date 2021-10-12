@@ -54,18 +54,19 @@
             }
             preload() {
                 this.load.image("title", "./title.png");
+                this.load.image("titleString", "./titleString.png");
             }
             create() {
                 var bg001 = this.add
                     .tileSprite(0, 0, gameWidth, gameHeight, 'title')
                     .setOrigin(0)
                     .setScrollFactor(0);
-                //let titleImg = this.add.sprite(gameWidth / 2, 300, "title");
 
-                let text = this.add
-                    .text(200, 100, "Get a flag!")
-                    .setFontSize(46)
-                    .setColor("#ff0");
+                let titleImg = this.add.sprite(0, 0, "titleString").setOrigin(0);
+                //                let text = this.add
+                //                    .text(200, 100, "Get a flag!")
+                //                    .setFontSize(46)
+                //                    .setColor("#ff0");
 
                 clickButton = this.add
                     .text(200, 300, "START TO CLICK")
@@ -98,10 +99,10 @@
             }
             preload() {
                 this.load.image("bg001", "./bg.png");
-                this.load.spritesheet("cat", "./walk.png", {
+                this.load.spritesheet("cat", "./cat.png", {
                     frameWidth: 128,
                     frameHeight: 112
-                });                
+                });
                 this.load.image("goal", "./goal.png");
                 this.load.spritesheet("teki", "./teki.png", {
                     frameWidth: 100,
@@ -109,11 +110,8 @@
                 });
                 this.load.atlas('sheet', 'ground-data.png', 'ground-data.json');
                 this.load.json('shapes', 'shapes.json');
-
-
             }
             create() {
-                currentScene = this;
                 timerCnt = 0;
 
                 var bg = this.add
@@ -124,30 +122,43 @@
                 shapes = this.cache.json.get('shapes');
                 this.matter.world.setBounds(-1000, -500, 720, 2000);
 
-                var blockGround = this.matter.add.image(200, 1100, 'sheet', 'part3.png', { shape: shapes.part3}).setStatic(true);
-                var blockFlat1 = this.matter.add.image(400, 500, 'sheet', 'part3.png', { shape: shapes.part3}).setStatic(true);
+                groundBlocks = [];
+                groundBlocks.push(this.matter.add.image(200, 1100, 'sheet', 'part3.png', { shape: shapes.part3 }).setStatic(true));
+                groundBlocks.push(this.matter.add.image(500, 800, 'sheet', 'part2.png', { shape: shapes.part2 }).setStatic(true));
+                groundBlocks.push(this.matter.add.image(400, 500, 'sheet', 'part3.png', { shape: shapes.part3 }).setStatic(true));
+                groundBlocks.push(this.matter.add.image(600, 300, 'sheet', 'part2.png', { shape: shapes.part2 }).setStatic(true));
+                groundBlocks.push(this.matter.add.image(0, 300, 'sheet', 'part1.png', { shape: shapes.part1 }).setStatic(true));
+                groundBlocks.push(this.matter.add.image(600, 300, 'sheet', 'part2.png', { shape: shapes.part2 }).setStatic(true));
+                groundBlocks.push(this.matter.add.image(0, 300, 'sheet', 'part1.png', { shape: shapes.part1 }).setStatic(true));
+                groundBlocks.push(this.matter.add.image(200, 50, 'sheet', 'part1.png', { shape: shapes.part1 }).setStatic(true));
+                groundBlocks.push(this.matter.add.image(400, -200, 'sheet', 'part3.png', { shape: shapes.part3 }).setStatic(true));
 
-                var block001 = this.matter.add.image(600, 300, 'sheet', 'part2.png', { shape: shapes.part2 }).setStatic(true);
-                var block002 = this.matter.add.image(0, 300, 'sheet', 'part1.png', { shape: shapes.part1 }).setStatic(true);
+                for (var i = 0; i < groundBlocks.length; i++) {
+                    groundBlocks[i].body.label = "ground";
+                }
 
-                var block003 = this.matter.add.image(600, 300, 'sheet', 'part2.png', { shape: shapes.part2 }).setStatic(true);
-                var block004 = this.matter.add.image(0, 300, 'sheet', 'part1.png', { shape: shapes.part1 }).setStatic(true);
+                aniChara = this.add.sprite(0, -20, "cat");
+                this.anims.create({
+                    key: "walkplayer",
+                    frameRate: 30,
+                    frames: this.anims.generateFrameNumbers("cat", { start: 0, end: 9 }),
+                    repeat: -1
+                });
+                this.anims.create({
+                    key: "stopplayer",
+                    frameRate: 1,
+                    frames: this.anims.generateFrameNumbers("cat", { start: 0, end: 0 }),
+                    repeat: -1
+                });
 
-                var block005 = this.matter.add.image(200, 50, 'sheet', 'part1.png', { shape: shapes.part1 }).setStatic(true);
-                var block006 = this.matter.add.image(400, -200, 'sheet', 'part3.png', { shape: shapes.part3}).setStatic(true);
+                container1 = this.add.container(200, 900, [aniChara]);
+                container1.setSize(32, 60);
+                player = this.matter.add.gameObject(container1);
+                player.setFixedRotation();
+                player.body.label = "cat";
 
-                blockGround.body.label = "ground";
-                blockFlat1.body.label = "ground";
-
-                var block000 = this.matter.add.image(500, 800, 'sheet', 'part2.png', { shape: shapes.part2 }).setStatic(true);
-                block000.body.label = "ground";
-
-          
-
-                console.log(blockGround.body);
-                console.log(blockFlat1.body);
-	//	console.log(blockFlat1.body);
-
+                goalObj = this.matter.add.sprite(450, -250, "goal").setFixedRotation();
+                goalObj.body.label = "goal";
 
                 this.anims.create({
                     key: "throwbarrel",
@@ -158,64 +169,33 @@
                 tekiObj1 = this.add.sprite(10, 200, "teki");
                 tekiObj2 = this.add.sprite(600, 150, "teki");
                 tekiObj2.flipX = true;
-            
-                goalObj = this.matter.add.sprite(450, -250, "goal").setFixedRotation();
-                goalObj.body.label = "goal";
-
-                player = this.matter.add.sprite(220, 900, "cat").setFixedRotation();
-                this.anims.create({
-                    key: "walkplayer",
-                    frameRate: 30,
-                    frames: this.anims.generateFrameNumbers("cat", { start: 0, end: 9 }),
-                    repeat: -1
-                });
-                player.body.label = "cat";
-                this.anims.create({
-                    key: "stopplayer",
-                    frameRate: 1,
-                    frames: this.anims.generateFrameNumbers("cat", { start: 0, end: 0 }),
-                    repeat: -1
-                });
-                player.play("walkplayer");
-                cursors = this.input.keyboard.createCursorKeys();
-
-                tekiGrp = this.add.group();
-
-                this.matter.world.on("collisionactive", function (e) {
-
-                    //isTouchingGround = false;
-
-                    // a collision made by a pair of bodies
-                    e.pairs.forEach(function (p) {
-                        console.log(p);
-                        // if a colliding body's label is "wheel"...
-                        if ((p.bodyA.label == "cat" ) || (p.bodyB.label == "cat")) {
-                            // at least a wheel is colliding
-                            isTouchingGround = true;
-                        }
-                    }.bind(this));
-                }.bind(this));
-
-                
-                this.matter.world.on("collisionstart", function (event, body_a, body_b) {
-//                    console.log("collision start, between", body_a, body_b);
-                        if ((body_a.label == "cat") || (body_b.label == "cat") ){
-                            if ((body_a.label == "goal") || (body_b.label == "goal") ){
-                                console.log("GOAL");
-                                touchGoal()
-                            }
-                        }
-                });
-                
-
-
-
 
                 mainCamera = this.cameras.main;
                 mainCamera.startFollow(player);
                 mainCamera.setFollowOffset(0, 0);
-                
-                remainTime = 10;
+                cursors = this.input.keyboard.createCursorKeys();
+
+                remainTime = 15;
+                bGame = true;
+
+                this.matter.world.on("collisionactive", function (e) {
+                    isTouchingGround = false;
+                    //console.log("my object: %o", e);
+                    e.pairs.forEach(function (p) {
+                        if (p.bodyA.label == "cat" || p.bodyB.label == "cat") {
+                            //Check touch on the ground
+                            if ((p.bodyA.parent.label == "ground") || (p.bodyB.parent.label == "ground")) {
+                                console.log("my object: %o", p);
+                                isTouchingGround = true;
+                            }
+                            else if (p.bodyA.label == "goal" || p.bodyB.label == "goal") {//touch on the goal flag
+                                doGoal();
+                            }
+                        }
+                    });
+                });
+
+
                 txtTime = this.add
                     .text(50, 20, "残り時間：" + remainTime)
                     .setScrollFactor(0)
@@ -230,7 +210,7 @@
                     .setColor("#ff0");
 
                 btnReturn = this.add
-                    .text(gameWidth / 2 - 100, 600, " BACK ")
+                    .text(gameWidth / 2 - 100, 400, " BACK ")
                     .setScrollFactor(0)
                     .setFontSize(46)
                     .setColor("#ff0")
@@ -250,50 +230,54 @@
                     this);
                 btnReturn.visible = false;
 
-                bGame = true;
-
                 bgm.loop(true);
                 bgmOver.loop(true);
                 bgm.play();
-
             }
-            update() {
 
+            update() {
                 if (bGame == true) {
                     timerCnt = (timerCnt + 1) % 60;
                     if (timerCnt == 0) {
-                        if(Math.floor( Math.random() * 101 ) > 60){
+                        if (Math.floor(Math.random() * 101) > 10) {
                             tekiObj1.play("throwbarrel");
                             var taru1 = this.matter.add.sprite(tekiObj1.x, tekiObj1.y, 'sheet', 'barrel.png', { shape: shapes.barrel });
+                            taru1.setMass(999);
+                            taru1.setVelocityX(16);
+                            taru1.body.label = "ground";
                         }
-                        if(Math.floor( Math.random() * 101 ) > 70){
+                        if (Math.floor(Math.random() * 101) > 10) {
                             tekiObj2.play("throwbarrel");
-                            var taru2 = this.matter.add.sprite(tekiObj2.x, tekiObj2.y, 'sheet', 'barrel.png', { shape: shapes.barrel });                            
+                            var taru2 = this.matter.add.sprite(tekiObj2.x, tekiObj2.y, 'sheet', 'barrel.png', { shape: shapes.barrel });
+                            taru2.setMass(999);
+                            taru2.setVelocityX(-16);
+                            taru2.body.label = "ground";
                         }
                         remainTime = remainTime - 1;
                         txtTime.text = "残り時間：" + remainTime;
                         if (remainTime <= 0) {
-                            playGameOver();
+                            doGameOver();
                         }
                     }
+
                     if (cursors.left.isDown) {
-                        player.flipX = true;
+                        aniChara.flipX = true;
                         player.setVelocityX(-4);
                         if (isWalking == false) {
-                            player.play("walkplayer");
+                            aniChara.play("walkplayer");
                             isWalking = true;
                         }
                     } else if (cursors.right.isDown) {
-                        player.flipX = false;
+                        aniChara.flipX = false;
                         player.setVelocityX(4);
                         if (isWalking == false) {
-                            player.play("walkplayer");
+                            aniChara.play("walkplayer");
                             isWalking = true;
                         }
                     } else {
                         player.setVelocityX(0);
                         if (isWalking == true) {
-                            player.play("stopplayer");
+                            aniChara.play("stopplayer");
                             isWalking = false;
                         }
                     }
@@ -301,18 +285,14 @@
                         player.setVelocityY(-20);
                         isTouchingGround = false;
                     }
-
-                    console.log(isTouchingGround);
-                    
                     if (player.y >= 1350) {
-                    
-                            playGameOver();
+                        doGameOver();
                     }
-                }
 
+                }
             }
         }
-        function playGameOver() {
+        function doGameOver() {
             mainCamera.stopFollow();
             bGame = false;
             if (bgm != null) {
@@ -321,12 +301,10 @@
             txtEnding.text = "GAME OVER";
             txtEnding.visible = true;
             btnReturn.visible = true;
-
             bgmOver.play();
-            console.log("play");
         }
 
-        function touchGoal() {
+        function doGoal() {
             if (bGame == true) {
                 bGame = false;
                 if (bgm != null) {
@@ -340,22 +318,19 @@
                 player.setVelocity(0, 0);
                 player.x = goalObj.x;
                 player.y = goalObj.y;
-                goalObj.destroy(true); 
+                goalObj.destroy(true);
             }
         }
 
 
-        var tekiGrp;
-        var groundGrp;
         var bGame = false;
         var timerCnt = 0;
-        var container1;
+        var groundBlocks = [];
         var isWalking = false;
         var isTouchingGround = false;
         var remainTime = 0;
-        var txtTime, txtEnding, btnReturn, objBomb, clickButton;
-        var player, goalObj, tekiObj, cursors, mainCamera;
-        var shapes, tekiObj1, tekiObj2;
+        var txtTime, txtEnding, btnReturn, clickButton;
+        var player, aniChara, container1, goalObj, tekiObj, cursors, mainCamera, shapes, tekiObj1, tekiObj2;
         var config = {
             type: Phaser.AUTO,
             width: gameWidth,
@@ -366,8 +341,7 @@
                 default: "matter",
                 matter: {
                     gravity: {
-                        x: 0,
-                        y: 2.5, // <--This is the only way I could get the skater to roll up the ramp.
+                        x: 0, y: 2.5
                     },
                     debug: true
                 }
@@ -377,8 +351,6 @@
                 autoCenter: Phaser.Scale.CENTER_BOTH,
             },
             parent: 'game',
-            title: 'Yusha Breaker',
-            version: '0.0.1',
             audio: { disableWebAudio: true },
             scene: [titleScene, gameScene1]
         }
